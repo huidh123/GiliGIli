@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent_black_90000000">#90000000</color>
+    <color name="white_FFFFFF">#FFFFFF</color>
+    <color name="text_color_default">#404548</color>
+    <color name="text_color_grey">#929292</color>
+    <color name="text_orange">#fd7b23</color>
+    <color name="text_grey_757575">#757575</color>
+    <color name="sperate_bar_color_grey_e4e4e4">#e4e4e4</color>
+</resources>

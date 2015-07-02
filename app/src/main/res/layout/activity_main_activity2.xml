@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.cch.danmakuproj.Activity.MainActivity2Activity"
+                android:background="@drawable/backtest">
+
+    <com.cch.danmakuproj.CustomView.DanMaKuView
+        android:id="@+id/danmuView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
+
+    <Button
+        android:id="@+id/btn_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/danmuView"
+        android:text="暂停"/>
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/btn_pause"
+        android:layout_alignBottom="@id/btn_pause"
+        android:text="播放"/>
+
+    <SeekBar
+        android:id="@+id/sb_player_time"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@id/btn_pause"/>
+
+    <TextView
+        android:id="@+id/tv_play_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@id/sb_player_time"
+        android:text="60/60s"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <io.vov.vitamio.widget.VideoView
+        android:id="@+id/vv_video_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/ll_danmaku_view"
+        android:layout_width="match_parent"
+        android:background="@color/transparent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_video_controler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_video_controler_header"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:background="@color/transparent_black_90000000">
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_polymer_black_48dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/white_FFFFFF"
+                android:textSize="@dimen/video_title_text_size"
+                android:padding="@dimen/base_padding"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/test_text"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="200dp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_video_controler_footer"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:background="@color/transparent_black_90000000">
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_polymer_black_48dp"/>
+
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:id="@+id/sb_player_progress"/>
+
+            <TextView
+                android:id="@+id/tv_play_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/abc_text_size_button_material"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/abc_control_padding_material"
+                android:textColor="@color/white_FFFFFF"
+                android:text="@string/test_play_msg"/>
+
+            <ImageButton
+                android:id="@+id/btn_pause"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_polymer_black_48dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

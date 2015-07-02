@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_height_54dp"
+        android:background="#ff0000"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:padding="@dimen/base_padding"
+            android:scaleType="fitXY"
+            android:src="@drawable/test_vedio_title_pic"/>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:padding="@dimen/base_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="测试视频标题"
+                android:textColor="@color/text_color_default"
+                android:textSize="@dimen/text_max_size_20sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View style="@style/view_sperate_line_style"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tv_label_vedio_part"
+            style="@style/textview_label_16sp"
+            android:text="@string/label_vedio_part"/>
+
+        <TextView
+            style="@style/textview_label_16sp"
+            android:layout_toRightOf="@+id/tv_label_vedio_part"
+            android:text="99"/>
+
+        <TextView
+            android:id="@+id/tv_label_vedio_from"
+            style="@style/textview_label_16sp"
+            android:layout_below="@+id/tv_label_vedio_part"
+            android:paddingTop="@dimen/padding_top_4dp"
+            android:text="@string/label_vedio_from"/>
+
+        <TextView
+            style="@style/textview_label_16sp"
+            android:layout_alignBaseline="@+id/tv_label_vedio_from"
+            android:layout_toRightOf="@+id/tv_label_vedio_from"
+            android:text="BILIBILI"/>
+
+        <Button
+            android:id="@+id/btn_play_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/play_now"
+            android:textSize="@dimen/text_small_size_14sp"/>
+    </RelativeLayout>
+
+    <View style="@style/view_sperate_line_style"/>
+
+    <TextView
+        android:id="@+id/tv_vedio_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/base_padding"
+        android:text="测试视频简介测试视频简介测试视频简介测试视频简介测试视频简介测试视频简介测试视频简介测试视频简介测试视频简介测试视频简介"
+        android:textColor="@color/text_color_grey"
+        android:textSize="@dimen/text_small_size_14sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/base_padding"
+        android:text="共有99段视频"
+        android:textColor="@color/text_color_default"
+        android:textSize="@dimen/text_middel_size_16sp"/>
+
+    <View style="@style/view_sperate_line_style"/>
+
+    <com.andexert.library.RippleView
+        android:id="@+id/more"
+        rv_centered="true"
+        rv_alpha="150"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <Button
+            android:id="@+id/btn_start_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF0000"
+            android:text="123456"/>
+    </com.andexert.library.RippleView>
+
+    <com.cch.danmakuproj.CustomView.ListViewForScrollView
+        android:id="@+id/lv_vedio_part_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.cch.danmakuproj.CustomView.ListViewForScrollView>
+
+    <WebView
+        android:id="@+id/wv_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></WebView>
+</LinearLayout>
