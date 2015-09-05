@@ -59,4 +59,16 @@ public class DataUtils {
         resultColorStr = "#"+resultColorStr;
         return resultColorStr;
     }
+
+    /**
+     * 获取两点之间距离长度
+     * @param p1x
+     * @param p1y
+     * @param p2x
+     * @param p2y
+     * @return
+     */
+    public static double getDistanceBetweenTwoPoint(float p1x,float p1y,float p2x,float p2y){
+        return Math.sqrt(Math.pow((p1x - p2x),2) + Math.pow((p1y - p2y),2));
+    }
 }

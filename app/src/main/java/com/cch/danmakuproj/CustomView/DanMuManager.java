@@ -20,16 +20,15 @@ public class DanMuManager {
     public static final String tag = "DanMuManager";
 
     //正在屏幕显示的滚动弹幕及其管理数据结构
-    public ArrayList<DanMuItem> showingDanMuList = new ArrayList<>();
+    public ArrayList<DanMuItem> showingDanMuList = new ArrayList<DanMuItem>();
     public ArrayList<DanMaKu> waitingDanMuList = new ArrayList<DanMaKu>();
 
     private HashSet<DanMuItem> needToRemoveDanmuSet = new HashSet<DanMuItem>();
     private HashSet<DanMuItem> needToAddDanmuSet = new HashSet<DanMuItem>();
 
     //顶部弹幕及其管理数据结构
-    private ArrayList<DanMuItem> showingTopDanmuList = new ArrayList<>();
-    private ArrayList<DanMaKu> waitingTopDanmuList = new ArrayList<>();
-
+    private ArrayList<DanMuItem> showingTopDanmuList = new ArrayList<DanMuItem>();
+    private ArrayList<DanMaKu> waitingTopDanmuList = new ArrayList<DanMaKu>();
 
     public int viewHeight = 0;
     public int viewWidth = 0;

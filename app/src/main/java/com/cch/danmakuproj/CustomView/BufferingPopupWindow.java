@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.cch.danmakuproj.AndroidUtils.DensityUtils;
 import com.cch.danmakuproj.R;
 
 /**
@@ -28,8 +29,8 @@ public class BufferingPopupWindow extends PopupWindow {
 
         tv_buffer_percent = (TextView) bufferingBaseView.findViewById(R.id.tv_buffer_percent);
         setContentView(bufferingBaseView);
-        setHeight(200);
-        setWidth(200);
+        setHeight(DensityUtils.dp2px(context, 200));
+        setWidth(DensityUtils.dp2px(context, 200));
         Log.e(tag, "height = " + bufferingBaseView.getMeasuredHeight() + "width=" + bufferingBaseView.getMeasuredWidth());
 
     }

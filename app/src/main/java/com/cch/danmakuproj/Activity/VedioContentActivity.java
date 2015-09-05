@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cch.danmakuproj.AndroidUtils.L;
+import com.cch.danmakuproj.DanMakuClass.DanMaKuViewConstants;
 import com.cch.danmakuproj.R;
 import com.cch.danmakuproj.Utils.BiliDanmakuXMLParser;
 import com.cch.danmakuproj.Utils.Constant;
@@ -30,6 +31,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -60,7 +63,7 @@ public class VedioContentActivity extends ActionBarActivity {
         btn_start_play.setOnClickListener(new OnPlayBtnClickListener());
     }
 
-    public void setToolbar(){
+    public void setToolbar() {
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +75,11 @@ public class VedioContentActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    class OnPlayBtnClickListener implements View.OnClickListener{
+    class OnPlayBtnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            NetGetDanmakuFileTask netGetDanmakuFileTask = new NetGetDanmakuFileTask(613528);
+            NetGetDanmakuFileTask netGetDanmakuFileTask = new NetGetDanmakuFileTask(4421484);
             netGetDanmakuFileTask.execute();
         }
     }
@@ -84,12 +87,12 @@ public class VedioContentActivity extends ActionBarActivity {
     /**
      * 获取弹幕文件异步任务
      */
-    class NetGetDanmakuFileTask extends AsyncTask<Void,Void,DanmuFileData>{
-        private int chatId ;
+    class NetGetDanmakuFileTask extends AsyncTask<Void, Void, DanmuFileData> {
+        private int chatId;
 
         private String resStr;
 
-        public NetGetDanmakuFileTask(int chatId){
+        public NetGetDanmakuFileTask(int chatId) {
             this.chatId = chatId;
         }
 
@@ -107,15 +110,15 @@ public class VedioContentActivity extends ActionBarActivity {
                 isSuccessed = NetWorkUtils.downLoadDanmuFile(chatId);
             } catch (SocketTimeoutException e) {
                 e.printStackTrace();
-               return null;
+                return null;
             }
-            L.e("网络请求成功"+isSuccessed);
-            if(!isSuccessed){
+            L.e("网络请求成功" + isSuccessed);
+            if (!isSuccessed) {
                 return null;
             }
 
-            File danmuFile = new File(Constant.DANMU_FILE_SAVE_PATH+chatId);
-            if(!danmuFile.exists()){
+            File danmuFile = new File(Constant.DANMU_FILE_SAVE_PATH + chatId);
+            if (!danmuFile.exists()) {
                 return null;
             }
             L.e("文件解析成功");
@@ -136,11 +139,12 @@ public class VedioContentActivity extends ActionBarActivity {
         protected void onPostExecute(DanmuFileData danmuFileData) {
             super.onPostExecute(danmuFileData);
             loadingDialog.dismiss();
-            if(danmuFileData == null){
-                Log.e(tag,"弹幕解析失败");
-            }else{
-                Log.e(tag,"弹幕服务器"+danmuFileData.getChatServer());
-                Collections.sort(danmuFileData.getDanmuList(),new SortByTimeDesc());
+            if (danmuFileData == null) {
+                Log.e(tag, "弹幕解析失败");
+            } else {
+                Log.e(tag, "弹幕服务器" + danmuFileData.getChatServer());
+                Log.e(tag, "弹幕数量" + danmuFileData.getDanmuList().size());
+                Collections.sort(danmuFileData.getDanmuList(), new SortByTimeDesc());
                 //设置弹幕到全局变量处，准备播放
                 Constants.danmuList = danmuFileData.getDanmuList();
                 startActivity(new Intent(VedioContentActivity.this, VideoPlayerActivity.class));
@@ -148,12 +152,24 @@ public class VedioContentActivity extends ActionBarActivity {
         }
     }
 
-    class SortByTimeDesc implements Comparator<DanMaKu>{
+    class SortByTimeDesc implements Comparator<DanMaKu> {
 
         @Override
         public int compare(DanMaKu danMaKu, DanMaKu t1) {
 
-            return danMaKu.getShowTime() < t1.getShowTime() ? -1:1;
+            return danMaKu.getShowTime() < t1.getShowTime() ? -1 : 1;
         }
+    }
+
+    public ArrayList getTestList(){
+        ArrayList<DanMaKu> danMakus = new ArrayList<>();
+        danMakus.add(new DanMaKu("测试111111111111111111",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+        danMakus.add(new DanMaKu("测试222222222222222222",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+        danMakus.add(new DanMaKu("测试3333333333333333331",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+        danMakus.add(new DanMaKu("测试444444444444444444",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+        danMakus.add(new DanMaKu("测试55555555555555555",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+        danMakus.add(new DanMaKu("测试16666666666666666",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+        danMakus.add(new DanMaKu("测试777777777777777711",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+        return danMakus;
     }
 }

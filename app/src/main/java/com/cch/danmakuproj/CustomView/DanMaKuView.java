@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -48,7 +49,7 @@ public class DanMaKuView extends SurfaceView implements SurfaceHolder.Callback, 
      */
     private int danmuStrokeWitdh = 2;
     /**
-     *
+     *弹幕阴影颜色
      */
     private String danmuStrokeColor = "#000000";
     /**
@@ -207,7 +208,6 @@ public class DanMaKuView extends SurfaceView implements SurfaceHolder.Callback, 
         getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
         surfaceHolder.addCallback(this);
-
         //freshTh.setName("弹幕绘图刷新进程");
         handler = new MyHandler(this);
     }
@@ -222,6 +222,8 @@ public class DanMaKuView extends SurfaceView implements SurfaceHolder.Callback, 
         isFreshThreadRun = true;
         freshTh.setName("彈幕刷新線程");
         freshTh.start();
+        //Dumptrace调试代码
+        Debug.startMethodTracing("test");
     }
 
     @Override
@@ -235,6 +237,8 @@ public class DanMaKuView extends SurfaceView implements SurfaceHolder.Callback, 
         isFreshThreadRun = false;
         try {
             freshTh.join();
+            //Dumptrace调试代码
+            Debug.stopMethodTracing();
             Log.e(tag, "停止线程");
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -265,7 +269,6 @@ public class DanMaKuView extends SurfaceView implements SurfaceHolder.Callback, 
                 } else {
                     canvas.drawText(item.message, item.curX, item.curY, paint);
                 }
-
             }
         }
     }
@@ -305,7 +308,6 @@ public class DanMaKuView extends SurfaceView implements SurfaceHolder.Callback, 
         }
         return null;
     }
-
 
     public void removeDanMaKuEnigineTimeDriver() {
         this.danMaKuEnigineTimeDriver = null;

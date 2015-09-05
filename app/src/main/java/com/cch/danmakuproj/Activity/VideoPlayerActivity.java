@@ -1,7 +1,9 @@
 package com.cch.danmakuproj.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,13 +18,17 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 
 import com.cch.danmakuproj.CustomView.BufferingPopupWindow;
-import com.cch.danmakuproj.CustomView.DanMaKuView;
+import com.cch.danmakuproj.CustomView.VedioPlayGestureControl;
+import com.cch.danmakuproj.DanMakuClass.DanMaKuView;
 import com.cch.danmakuproj.Interface.DanMaKuEnigineTimeDriver;
+import com.cch.danmakuproj.Interface.VedioControlInterface;
+import com.cch.danmakuproj.Interface.VedioPlayStateInterface;
 import com.cch.danmakuproj.R;
 import com.cch.danmakuproj.Utils.Constant;
 
@@ -35,7 +41,7 @@ import io.vov.vitamio.widget.*;
 /**
  * Created by 晨晖 on 2015-05-14.
  */
-public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeDriver {
+public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeDriver,VedioControlInterface,VedioPlayStateInterface {
     //播放界面控件
     private VideoView vv_video_player;
     private TextView tv_play_time;
@@ -59,11 +65,7 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
     private final static int PROGRESS_UPDATE = 1;
     private final static int HIDE_CONTROLER = 2;
 
-
-    //private String videoPath = "http://cn-jlcc2-cu.acgvideo.com/vg0/9/d8/3626212-1.flv?expires=1431729000&ssig=bI-tEaqlj9WEtFHvCfv4DA&o=3707937811&rate=0";
-
     private Handler handler = new VideoViewHandler(this);
-
 
     private void initScreenLayout() {
         //隐藏标题
@@ -72,22 +74,6 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //强制横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
-    /**
-     * 暂停视频和弹幕播放
-     */
-    private void stopVideoPlay() {
-        vv_video_player.pause();
-        dmkv_danmulayer.setPause(true);
-    }
-
-    /**
-     * 开始视频和弹幕播放
-     */
-    private void startVideoPlay() {
-        vv_video_player.start();
-        dmkv_danmulayer.setPause(false);
     }
 
     @Override
@@ -113,9 +99,10 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
         dmkv_danmulayer = new DanMaKuView(VideoPlayerActivity.this);
         ll_danmaku_view.addView(dmkv_danmulayer);
         //添加弹幕时间驱动
-        dmkv_danmulayer.setDanMaKuEnigineTimeDriver(this);
+        //dmkv_danmulayer.setDanMaKuEnigineTimeDriver(this);
         dmkv_danmulayer.setPause(true);
-        mGestureDetector = new GestureDetector(getApplicationContext(), new VideoActivityGestureListener());
+        VedioPlayGestureControl vedioPlayGestureControl = new VedioPlayGestureControl(VideoPlayerActivity.this,this,this);
+        mGestureDetector = new GestureDetector(getApplicationContext(), vedioPlayGestureControl);
 
 //        Uri uri = Uri.parse(videoPath);
 //        Map<String, String> map = new HashMap<String, String>();
@@ -126,7 +113,7 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
 
         sb_player_progress.setOnSeekBarChangeListener(new VideoSeekBarOnSeekListener());
         //vv_video_player.setVideoPath(Constant.VIDEO_URL);
-        vv_video_player.setVideoURI(Uri.parse("http://v.iask.com/v_play_ipad.php?vid=85834928"));
+          vv_video_player.setVideoURI(Uri.parse("http://cn-sdzb1-cu.acgvideo.com/vg4/9/fe/4440962.mp4?expires=1441380600&ssig=lnjRlfHB-ToDvWj50PKgrA&o=3707937831&appkey=84b739484c36d653&rate=0"));
         vv_video_player.setTimedTextShown(true);
         vv_video_player.setOnPreparedListener(new VideoPreparedListener());
         vv_video_player.setVideoQuality(View.DRAWING_CACHE_QUALITY_LOW);
@@ -167,6 +154,85 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
     @Override
     public long getCurTimeInMills() {
         return vv_video_player.getCurrentPosition();
+    }
+
+    @Override
+    public void startVideoPlay() {
+        vv_video_player.start();
+        dmkv_danmulayer.setPause(false);
+    }
+
+    @Override
+    public void pauseVideoPlay() {
+        vv_video_player.pause();
+        dmkv_danmulayer.setPause(true);
+    }
+
+    @Override
+    public void movePlayDuration(int deltaMills) {
+        long curPlayDuration = vv_video_player.getDuration();
+        vv_video_player.seekTo(curPlayDuration + deltaMills);
+    }
+
+    @Override
+    public void changeVolume(int deltaVolume) {
+        AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        //最大音量
+        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        //当前音量
+        int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+        if(currentVolume <= 0){
+            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+        }else if(currentVolume >= maxVolume){
+            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+        }else{
+            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
+        }
+    }
+
+    @Override
+    public void changeBrightness(int deltaCount) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        // if (lp.screenBrightness <= 0.1) {
+        // return;
+        // }
+        lp.screenBrightness = lp.screenBrightness + deltaCount / 255.0f;
+        if (lp.screenBrightness > 1) {
+            lp.screenBrightness = 1;
+        } else if (lp.screenBrightness < 0.2) {
+            lp.screenBrightness = (float) 0.2;
+        }
+        getWindow().setAttributes(lp);
+    }
+
+    @Override
+    public void isShowControlView(boolean isShow) {
+        if(!isShow){
+            ll_video_controler.setVisibility(View.INVISIBLE);
+            handler.removeMessages(HIDE_CONTROLER);
+        }else{
+            ll_video_controler.setVisibility(View.VISIBLE);
+            handler.sendEmptyMessageDelayed(HIDE_CONTROLER, HIDE_DELAY_TIME);
+        }
+    }
+
+    @Override
+    public void showStatePopWin(PopupWindow window) {
+        if(!window.isShowing()){
+            Log.e(tag,"顯示彈窗");
+            window.showAtLocation(vv_video_player, Gravity.CENTER, 0, 0);
+        }
+    }
+
+    @Override
+    public boolean getIsControlViewShown() {
+        return ll_video_controler.isShown();
+    }
+
+    @Override
+    public boolean getIsVideoPlaying() {
+        return vv_video_player.isPlaying();
     }
 
     /**
@@ -212,8 +278,8 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
                 if (bufferingPopupWindow == null) {
                     bufferingPopupWindow = new BufferingPopupWindow(VideoPlayerActivity.this);
                 } else if (!bufferingPopupWindow.isShowing() || mp.isPlaying()) {
-                    bufferingPopupWindow.showAtLocation(ll_video_controler, Gravity.CENTER, 0, 0);
-                    stopVideoPlay();
+                    bufferingPopupWindow.showAtLocation(vv_video_player, Gravity.CENTER, 0, 0);
+                    pauseVideoPlay();
                 } else if (bufferingPopupWindow.isShowing()) {
                     bufferingPopupWindow.setProgressPercent(percent);
                 }
@@ -232,7 +298,7 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (vv_video_player.isPlaying()) {
-                stopVideoPlay();
+                pauseVideoPlay();
             } else {
                 startVideoPlay();
                 vv_video_player.requestFocus();
