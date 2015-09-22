@@ -23,18 +23,14 @@ import com.cch.danmakuproj.Utils.NetWorkUtils;
 import com.cch.danmakuproj.javaBean.DanMaKu;
 import com.cch.danmakuproj.javaBean.DanmuFileData;
 
-import org.apache.commons.io.output.ClosedOutputStream;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 
 /**
@@ -79,7 +75,7 @@ public class VedioContentActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View view) {
-            NetGetDanmakuFileTask netGetDanmakuFileTask = new NetGetDanmakuFileTask(4421484);
+            NetGetDanmakuFileTask netGetDanmakuFileTask = new NetGetDanmakuFileTask(4559393);
             netGetDanmakuFileTask.execute();
         }
     }
@@ -144,9 +140,11 @@ public class VedioContentActivity extends ActionBarActivity {
             } else {
                 Log.e(tag, "弹幕服务器" + danmuFileData.getChatServer());
                 Log.e(tag, "弹幕数量" + danmuFileData.getDanmuList().size());
+                Constants.danmuList = danmuFileData.getDanmuList();
+                //Constants.danmuList = getTestList();
                 Collections.sort(danmuFileData.getDanmuList(), new SortByTimeDesc());
                 //设置弹幕到全局变量处，准备播放
-                Constants.danmuList = danmuFileData.getDanmuList();
+
                 startActivity(new Intent(VedioContentActivity.this, VideoPlayerActivity.class));
             }
         }
@@ -161,15 +159,21 @@ public class VedioContentActivity extends ActionBarActivity {
         }
     }
 
-    public ArrayList getTestList(){
-        ArrayList<DanMaKu> danMakus = new ArrayList<>();
-        danMakus.add(new DanMaKu("测试111111111111111111",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
-        danMakus.add(new DanMaKu("测试222222222222222222",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
-        danMakus.add(new DanMaKu("测试3333333333333333331",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
-        danMakus.add(new DanMaKu("测试444444444444444444",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
-        danMakus.add(new DanMaKu("测试55555555555555555",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
-        danMakus.add(new DanMaKu("测试16666666666666666",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
-        danMakus.add(new DanMaKu("测试777777777777777711",1000, DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT,"#000000"));
+    public ArrayList getTestList() {
+        ArrayList<DanMaKu> danMakus = new ArrayList<DanMaKu>();
+        Random random = new Random();
+        for (int i = 0; i < 300; i++) {
+            int length = random.nextInt(7)+4;
+            String message =( "测试弹幕" + random.nextInt() % 999999999+1);
+
+            danMakus.add(new DanMaKu(message.substring(0,length), random.nextInt(1000), DanMaKuViewConstants.DANMU_TYPE_RIGHT_TOLEFT, "#000000"));
+        }
+        for (int i = 0; i < 100; i++) {
+            danMakus.add(new DanMaKu("测试顶部弹幕" + random.nextInt() % 9999 + 1, random.nextInt(1000), DanMaKuViewConstants.DANMU_TYPE_TOP, "#FF0000"));
+        }
+
         return danMakus;
     }
+
+
 }

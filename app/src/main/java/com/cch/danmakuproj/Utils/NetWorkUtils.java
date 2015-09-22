@@ -66,7 +66,7 @@ public class NetWorkUtils {
         if(httpClient == null){
             httpClient = new DefaultHttpClient();
         }
-        String path = String.format(regex,args);
+        String path = String.format(regex, args);
         InputStream is = null;
         String res = null;
         HttpURLConnection httpConnection = null;

@@ -60,6 +60,7 @@
             android:background="@color/transparent_black_90000000">
 
             <ImageButton
+                android:id="@+id/btn_start"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"

@@ -38,7 +38,7 @@ public class ChannelManeger {
     }
 
     /**
-     * 设置某个管到是否被占用
+     * 设置某个管道是否被占用
      * @param danmuType
      * @param index
      */

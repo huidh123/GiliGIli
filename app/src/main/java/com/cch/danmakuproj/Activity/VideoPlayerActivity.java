@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.cch.danmakuproj.CustomView.BufferingPopupWindow;
 import com.cch.danmakuproj.CustomView.VedioPlayGestureControl;
 import com.cch.danmakuproj.DanMakuClass.DanMaKuView;
+import com.cch.danmakuproj.DanMakuClass.DanMaKuViewConstants;
 import com.cch.danmakuproj.Interface.DanMaKuEnigineTimeDriver;
 import com.cch.danmakuproj.Interface.VedioControlInterface;
 import com.cch.danmakuproj.Interface.VedioPlayStateInterface;
@@ -52,6 +53,8 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
     private BufferingPopupWindow bufferingPopupWindow;
     private DanMaKuView dmkv_danmulayer;
     private LinearLayout ll_danmaku_view;
+    private ImageButton btn_start;
+
 
     private int Layout_Mode = 0;
     private int Modes[] = new int[]{VideoView.VIDEO_LAYOUT_FIT_PARENT, VideoView.VIDEO_LAYOUT_ORIGIN, VideoView.VIDEO_LAYOUT_SCALE, VideoView.VIDEO_LAYOUT_STRETCH, VideoView.VIDEO_LAYOUT_ZOOM};
@@ -94,27 +97,27 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
         sb_player_progress = (SeekBar) findViewById(R.id.sb_player_progress);
         btn_switch_layout = (Button) findViewById(R.id.btn_switch_layout);
         tv_play_time = (TextView) findViewById(R.id.tv_play_time);
+        btn_start = (ImageButton) findViewById(R.id.btn_start);
 
+        btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("danmu size",DanMaKuViewConstants.DANMAKU_TEXT_SIZE+"");
+                DanMaKuViewConstants.DANMAKU_TEXT_SIZE += 5;
+            }
+        });
         //添加弹幕层到指定层数
         dmkv_danmulayer = new DanMaKuView(VideoPlayerActivity.this);
         ll_danmaku_view.addView(dmkv_danmulayer);
         //添加弹幕时间驱动
-        //dmkv_danmulayer.setDanMaKuEnigineTimeDriver(this);
-        dmkv_danmulayer.setPause(true);
+        dmkv_danmulayer.setDanMaKuEnigineTimeDriver(this);
+        dmkv_danmulayer.setPause(false);
         VedioPlayGestureControl vedioPlayGestureControl = new VedioPlayGestureControl(VideoPlayerActivity.this,this,this);
         mGestureDetector = new GestureDetector(getApplicationContext(), vedioPlayGestureControl);
 
-//        Uri uri = Uri.parse(videoPath);
-//        Map<String, String> map = new HashMap<String, String>();
-//        map.put("expires", "1431729000");
-//        map.put("ssig", "bI-tEaqlj9WEtFHvCfv4DA");
-//        map.put("o", "3707937811");
-//        map.put("rate", "0");
-
         sb_player_progress.setOnSeekBarChangeListener(new VideoSeekBarOnSeekListener());
-        //vv_video_player.setVideoPath(Constant.VIDEO_URL);
-          vv_video_player.setVideoURI(Uri.parse("http://cn-sdzb1-cu.acgvideo.com/vg4/9/fe/4440962.mp4?expires=1441380600&ssig=lnjRlfHB-ToDvWj50PKgrA&o=3707937831&appkey=84b739484c36d653&rate=0"));
-        vv_video_player.setTimedTextShown(true);
+        vv_video_player.setVideoURI(Uri.parse("http://27.221.16.253/edge.v.iask.com/57518558.hlv?KID=sina,viask&Expires=1443024000&ssig=UhQTUCsSal&corp=1"));
+        vv_video_player.setTimedTextShown(false);
         vv_video_player.setOnPreparedListener(new VideoPreparedListener());
         vv_video_player.setVideoQuality(View.DRAWING_CACHE_QUALITY_LOW);
         vv_video_player.setOnBufferingUpdateListener(new VideoBufferingListener());
@@ -130,7 +133,6 @@ public class VideoPlayerActivity extends Activity implements DanMaKuEnigineTimeD
                 }
             }
         });
-        Log.e(tag,"create over");
     }
 
     @Override

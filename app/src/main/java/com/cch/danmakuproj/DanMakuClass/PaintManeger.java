@@ -20,12 +20,18 @@ public class PaintManeger {
      */
     public static Paint measureStrPaint;
 
+    /**
+     * 用于绘值BMP的画笔
+     */
+    public static Paint bmpPaint;
+
     private static PaintManeger paintManeger;
 
     private PaintManeger() {
         paintPool = new HashMap<String, Paint>();
         measureStrPaint = new Paint();
         measureStrPaint.setTextSize(DanMaKuViewConstants.DANMAKU_TEXT_SIZE);
+        bmpPaint = new Paint();
     }
 
     public synchronized static PaintManeger getInstance() {

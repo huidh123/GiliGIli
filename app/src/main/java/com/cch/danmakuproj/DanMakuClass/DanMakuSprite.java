@@ -1,9 +1,7 @@
 package com.cch.danmakuproj.DanMakuClass;
 
 import android.graphics.Canvas;
-
-import com.cch.danmakuproj.javaBean.DanMaKu;
-import com.cch.danmakuproj.javaBean.DanMuItem;
+import android.graphics.Paint;
 
 /**
  * 弹幕精灵父类
@@ -16,23 +14,35 @@ public abstract class DanMakuSprite {
      * 弹幕发送时间
      */
     public long showTimeMS;
-    public int curX;
-    public int curY;
+    public float curX;
+    public float curY;
     public String danmuColor;
     public int useDanmeChannel;
     public DanMaKuViewConstants.DanmuState danmuCurState;
     public float danmuLength;
     public int danmakuType;
 
+    public String bmpId;
+
     private PaintManeger paintManeger;
+    private BitmapManager bitmapManager;
 
     public DanMakuSprite() {
+        bitmapManager = BitmapManager.getInstance();
         paintManeger = PaintManeger.getInstance();
         danmuCurState = DanMaKuViewConstants.DanmuState.en_totallyInScreen;
     }
 
+    /**
+     * 弹幕精灵二段构造
+     */
+    public void initDanmukuSp(){
+        this.bmpId = bitmapManager.createDanmakuBmp((int) danmuLength,DanMaKuViewConstants.consentItemHeight, message, danmuColor);
+    }
     public void draw(Canvas canvas) {
-        canvas.drawText(message, curX, curY, paintManeger.getPaintByColor(danmuColor));
+        if(bitmapManager.getBitmapById(bmpId) != null){
+            canvas.drawBitmap(bitmapManager.getBitmapById(bmpId), curX, curY,paintManeger.bmpPaint);
+        }
     }
 
     /**
@@ -47,7 +57,7 @@ public abstract class DanMakuSprite {
      * @return 精灵状态枚举
      */
     public DanMaKuViewConstants.DanmuState getDanMaKuStatus() {
-        if (this.curX > DanMaKuViewConstants.viewWidth + DanMaKuViewConstants.judgeOffCon || this.curX < -((int) this.danmuLength + DanMaKuViewConstants.judgeOffCon)) {
+        if (this.curX > DanMaKuViewConstants.viewWidth + DanMaKuViewConstants.judgeOffCon || this.curX < -(this.danmuLength + DanMaKuViewConstants.judgeOffCon)) {
             danmuCurState = DanMaKuViewConstants.DanmuState.en_outOfScreen;
             return DanMaKuViewConstants.DanmuState.en_outOfScreen;
         } else if (this.curX <= DanMaKuViewConstants.viewWidth + DanMaKuViewConstants.judgeOffCon && this.curX > (DanMaKuViewConstants.viewWidth - this.danmuLength - DanMaKuViewConstants.judgeOffCon)) {

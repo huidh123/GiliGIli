@@ -1,7 +1,5 @@
 package com.cch.danmakuproj.DanMakuClass;
 
-import android.graphics.Paint;
-
 /**
  * Created by 晨晖 on 2015-07-31.
  */
@@ -23,7 +21,7 @@ public class DanMaKuViewConstants {
     /**
      * 弹幕字体大小
      */
-    public static final int DANMAKU_TEXT_SIZE = 60;
+    public static int DANMAKU_TEXT_SIZE = 60;
 
     /**
      * 弹幕相对屏幕状态
@@ -46,7 +44,7 @@ public class DanMaKuViewConstants {
     /**
      * 同行弹幕间距
      */
-    public static final int judgeOffCon = 35;
+    public static final int judgeOffCon = 100;
 
     public static final int DANMAKU_ACROSS_TIMEMS = 3800;
     /**
